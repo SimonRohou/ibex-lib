@@ -31,8 +31,8 @@ void CtcPixelMap::world_to_grid(IntervalVector box) {
     }
     
     for (unsigned int i = 0; i < I.ndim; i++) {
-        pixel_coords[2*i]   = floor(box[i].lb());
-        pixel_coords[2*i+1] = ceil(box[i].ub()-1);
+        pixel_coords[2*i]   = std::floor(box[i].lb());
+        pixel_coords[2*i+1] = std::ceil(box[i].ub()-1);
     }
 }
 
