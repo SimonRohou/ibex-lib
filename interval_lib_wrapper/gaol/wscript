@@ -98,7 +98,9 @@ def configure (conf):
 		if Utils.is_win32:
 			mathlib_ret = conf.install_mathlib_win32 (mathlib_archive)
 		else:
-			mathlib_ret = conf.configure_3rd_party_with_autotools (mathlib_archive)
+			args = " CFLAGS=-fPIC CXXFLAGS=-fPIC"
+			mathlib_ret = conf.configure_3rd_party_with_autotools (mathlib_archive,
+				conf_args = args)
 		_, mathlib_include, mathlib_lib = mathlib_ret
 		conf.env.INSTALL_3RD = True
 		conf.env.append_unique ("LIB_3RD_LIST", "ultim")
@@ -128,7 +130,7 @@ def configure (conf):
 		else:
 			args = "--with-mathlib-include=%s" % mathlib_include
 			args += " --with-mathlib-lib=%s" % mathlib_lib
-		args += " --disable-preserve-rounding --enable-optimize --disable-verbose-mode"
+		args += " CFLAGS=-fPIC CXXFLAGS=-fPIC --disable-preserve-rounding --enable-optimize --disable-verbose-mode"
 		gaol_ret = conf.configure_3rd_party_with_autotools (gaol_archive,
 				conf_args = args)
 		_, gaol_include, gaol_lib = gaol_ret
@@ -151,11 +153,11 @@ def configure (conf):
 	else:
 		ret = conf.check_cxx (**D)
 	if not ret:
-		D["cxxflags"] = "-msse2"
+		D["cxxflags"] = "-msse2 -fPIC"
 		D["msg"] = "Checking for header "+D["header_name"]+" with "+D["cxxflags"]
 		ret = conf.check_cxx (**D)
 	if not ret:
-		D["cxxflags"] = "-msse3"
+		D["cxxflags"] = "-msse3 -fPIC"
 		D["msg"] = "Checking for header "+D["header_name"]+" with "+D["cxxflags"]
 		ret = conf.check_cxx (**D)
 	if not ret:
